@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "mqtt_initializer.h"
 
-// code
+// code main
 MQTTClient client;
 MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 
