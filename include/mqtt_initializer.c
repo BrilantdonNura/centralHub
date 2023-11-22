@@ -3,30 +3,13 @@
 #include <MQTTClient.h>
 #include <string.h>
 #include "mqtt_initializer.h"
+#include "mqtt_messagehandler.h"
+
 
 #define ADDRESS     "127.0.0.1:1883"
 #define CLIENTID    "CentralHub"
 #define QOS         1
 #define TIMEOUT     10000L
-
-
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
-{
-    printf("Message arrived\n");
-    printf("     topic: %s\n", topicName);
-    printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
-    
-    MQTTClient_freeMessage(&message);
-    MQTTClient_free(topicName);
-    return 1;
-}
-
-void connlost(void *context, char *cause)
-{
-    printf("\nConnection lost\n");
-    if (cause)
-        printf("     cause: %s\n", cause);
-}
 
 
 int mqtt_initialize(MQTTClient* client, MQTTClient_connectOptions* conn_opts) {
