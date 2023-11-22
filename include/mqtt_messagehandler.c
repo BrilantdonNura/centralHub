@@ -1,6 +1,6 @@
 #include<MQTTClient.h>
 #include <cJSON.h>
-
+#include "db_handler.c"
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
@@ -14,6 +14,11 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     if (root != NULL) {
         printf("Valid JSON!\n");
+
+	sqlite3* db = connect_open_db("mydb");
+
+	write_to_db(db, "myTable");
+
 
         // Additional processing with the cJSON structure can be done here if needed
 
