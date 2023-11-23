@@ -1,6 +1,5 @@
 #include <MQTTClient.h>
 #include <cJSON.h>
-#include <sqlite3.h>
 #include <string.h>
 #include "db_handler.h"
 #include "shellyplug-s.h"
@@ -35,10 +34,10 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
            //printf("--%s--", "it contains!!");
    shellyplug_s_handle(topicName , (char*)message->payload);
+
+
+
     }
-
-
-
 
 
     // Attempt to parse the received message as JSON
@@ -46,11 +45,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     if (root != NULL) {
         printf("Valid JSON!\n");
-
-	sqlite3* db = connect_open_db("mydb");
-
-	write_to_db(db, "myTable");
-
 
         // Additional processing with the cJSON structure can be done here if needed
 

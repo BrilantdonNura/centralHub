@@ -5,11 +5,13 @@
 typedef struct shellyplug_s{
 
 	char* id; // Will get it from the topic
-	//double instantPower; // instant power in watts
 	double energy; // energy in watt/minute
-	//bool state; // State of the device 
+        char *tableSchema ;
+	char *dataEntry ;
+	//double instantPower; // instant power in watts
+	//bool state; // State of the device
 	//double internalTemperature; // Internal temperature of the device
-	bool overTemperature; // Over temperature True - NOT OK, False - OK
+//	bool overTemperature; // Over temperature True - NOT OK, False - OK
 
 }shellyplug_s;
 
