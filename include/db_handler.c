@@ -8,8 +8,11 @@ int rc = sqlite3_open("test.db", &db);
 return db;
 }
 
+
 int write_to_db(sqlite3* db , const char* tableName){
 int rc = 0;
+
+
 // SQL query to create the EnergyMeter table
     const char *create_table_sql = "CREATE TABLE IF NOT EXISTS EnergyMeter ("
                                    "id INTEGER PRIMARY KEY AUTOINCREMENT,"

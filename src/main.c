@@ -14,12 +14,15 @@ int main(int argc, char* argv[]) {
 if(mqtt_initialize(&client, &conn_opts) == 0){
 	printf("%s", "connected OK!\n");
 
-
-	if(mqtt_subscribe(&client, "hello") ==0){
+	// this subscription contains shellyplug-s, TRVs etc..
+	if(mqtt_subscribe(&client, "shellies/#") ==0){
 
 		printf("subscribed OK\n");
 	}
-
+	else{
+	
+		printf("subscribed FAIL\n");
+	}
 
 }
 
@@ -35,8 +38,6 @@ while(1){
 
 
 }
-
-
 
 
 mqtt_cleanup(&client);
