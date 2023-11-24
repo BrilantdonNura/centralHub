@@ -81,7 +81,8 @@ const char *insert_data_sql_format = "INSERT INTO shellyplugs (id, energy) VALUE
         .energy = energySpent,       // Initialize to appropriate values
         .tableSchema = "CREATE TABLE IF NOT EXISTS shellyplugs ("
                         "id TEXT,"
-                        "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,"
+			"timestamp DATE DEFAULT (datetime('now','localtime')),"
+                       // timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,"
                         "energy REAL);",
         .dataEntry = insert_data_sql
     };
