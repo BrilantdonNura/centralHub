@@ -32,11 +32,10 @@ else{
 
 }
 
-
-
-while(1){
-
-
+char c = 120;
+while(c>0){
+sleep(1);
+c--;
 }
 
 
