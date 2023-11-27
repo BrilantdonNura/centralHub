@@ -3,6 +3,7 @@
 #include <string.h>
 #include "db_handler.h"
 #include "shellyplug-s.h"
+#include "trv.h"
 /*
  *
  * the mqtt_messagehandler.c has the duty to classify the messages coming from 
@@ -21,42 +22,28 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
 
 
+
+
     // check if shellyplug-s is available in the topic's message
-    if(strstr(topicName,"shellyplug-s") != NULL){
+    if(strstr(topicName,"shellies") != NULL){
 
-	    /*Now here we need to handle the shelly plug's message 
-	    //pack it in a structure and send it's memory address
-	    //to the db_handler's function to save it
-	    */
+   //shellyplug_s_handle(topicName , (char*)message->payload);
+     if(strstr(topicName,"shellytrv") != NULL ){
+	
+	trv_handle(topicName , (char*)message->payload);
+	
+     }
+     
 
-	    //-- Test Here--
-	   //printf("%s", (char*)message->payload);
-
-           //printf("--%s--", "it contains!!");
-   shellyplug_s_handle(topicName , (char*)message->payload);
-
+}
 
 
-    }
 
-
-    // Attempt to parse the received message as JSON
-    cJSON *root = cJSON_Parse((char*)message->payload);
-
-    if (root != NULL) {
-        printf("Valid JSON!\n");
-
-        // Additional processing with the cJSON structure can be done here if needed
-
-        cJSON_Delete(root); // Clean up cJSON structure
-    } else {
-        printf("Not a valid JSON.\n");
-    }
 
 
 
     MQTTClient_freeMessage(&message);
-    MQTTClient_free(topicName);
+    MQTTClient_free(topicName);    
     return 1;
 }
 
