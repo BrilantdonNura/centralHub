@@ -135,16 +135,81 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
 		free(insert_data_sql);
 		printf("\n### free heap after writing in db motion ####\n");
 		cJSON_Delete(root);
+		return 1;
+		}else{
+
+		return 0;
+
 		}
 
-
 	}
+	else if(strstr(topic, "read")!= NULL){
+	char* id = extractMotionID(topic);
+		cJSON *root = cJSON_Parse(payload);
+    		if (root == NULL) {
+        		const char *error_ptr = cJSON_GetErrorPtr();
+        		if (error_ptr != NULL) {
+            			fprintf(stderr, "Error before: %s\n", error_ptr);
+        		}
+        		// Handle parsing error
+       			return 0;
+    		}
 
 
+		cJSON *data = cJSON_GetObjectItemCaseSensitive(root, "data");
+    		cJSON *start_time = cJSON_GetObjectItemCaseSensitive(root, "start_time");
+    		cJSON *end_time = cJSON_GetObjectItemCaseSensitive(root, "end_time");
 
+		if (cJSON_IsString(data) && cJSON_IsString(start_time) && cJSON_IsString(end_time)) {
+        		// Print the parsed values
+			const char *column = data->valuestring;
+			const char *startDate = start_time->valuestring;
+			const char *endDate = end_time->valuestring;
+
+			char sql[300];  // Adjust the size based on your needs
+			// Format the SQL string with dynamic column name and date values
+			snprintf(sql, sizeof(sql), "SELECT %s,timestamp FROM motion WHERE timestamp BETWEEN '%s' AND '%s'", column, startDate, endDate);
+
+		motion_t motionData = {
+
+		.tableSchema = "CREATE TABLE IF NOT EXISTS motion ("
+			       "id TEXT,"
+			       "timestamp DATE DEFAULT (datetime('now','localtime')),"
+			       "motion TEXT,"
+			       "motion_time TEXT,"
+			       "motion_active TEXT,"
+			       "vibration TEXT,"
+			       "lux INTEGER,"
+			       "battery INTEGER,"
+			       "temperature REAL,"
+			       "temp_available TEXT);",
+		.dataEntry = sql,
+		.operation = 'R'
+		};
+
+     sqlite3* key = connect_open_db("myDB");
+                if (write_to_db(key, &motionData)==1){
+                     free(id); 
+		    cJSON_Delete(root);
+                printf("\n### free heap after reading ####\n");
 	return 1;
 
+    } else {
+        fprintf(stderr, "Could not open and send data\n");
+	return 0;
+    }	}
+
+
+else{
+	fprintf(stderr, "HERE Invalid JSON format\n");
+		return 0;
+	}
+
 }
+
+
+}
+
 
 
 

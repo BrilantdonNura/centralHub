@@ -67,7 +67,7 @@ rc = sqlite3_exec(db, dataFromDevice->dataEntry, callback, (void *)resultaArray,
     if (jsonString == NULL) {
         fprintf(stderr, "Failed to convert cJSON object to JSON string\n");
         cJSON_Delete(jsonObject);
-        return 1;
+        return 0;
     }
 
     // Print the JSON string
