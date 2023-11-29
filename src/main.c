@@ -15,7 +15,7 @@ if(mqtt_initialize(&client, &conn_opts) == 0){
 	printf("%s", "connected OK!\n");
 
 	// this subscription contains shellyplug-s, TRVs etc..
-	if(mqtt_subscribe(&client, "shellies/#") ==0){
+	if(mqtt_subscribe(&client, "shellies/#") == 0){
 
 		printf("subscribed OK\n");
 	}

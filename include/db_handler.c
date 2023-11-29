@@ -35,6 +35,7 @@ int rc = 0;
 //Handle for different types
 trv_t* dataFromDevice = (trv_t *) dataStruct;
 
+
 if(dataFromDevice->operation == 'R'){
 char *zErrMsg = 0;
 printf("\n%s\n",dataFromDevice->dataEntry);

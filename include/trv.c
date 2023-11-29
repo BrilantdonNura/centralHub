@@ -170,7 +170,7 @@ cJSON *root = cJSON_Parse(payload);
 	const char *column = data->valuestring;
 	const char *startDate = start_time->valuestring;
 	const char *endDate = end_time->valuestring;
-
+	
 	char sql[300];  // Adjust the size based on your needs
 	// Format the SQL string with dynamic column name and date values
 	snprintf(sql, sizeof(sql), "SELECT %s,timestamp FROM trv WHERE timestamp BETWEEN '%s' AND '%s'", column, startDate, endDate);
@@ -187,8 +187,8 @@ cJSON *root = cJSON_Parse(payload);
 
      sqlite3* key = connect_open_db("myDB");
                 if (write_to_db(key, &trvDataRead)==1){
-                     free(id);
-		     cJSON_Delete(root);
+                     free(id); 
+			cJSON_Delete(root);
                 printf("\n### free heap after reading ####\n");
 
     } else {

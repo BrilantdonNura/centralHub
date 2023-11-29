@@ -4,6 +4,7 @@
 #include "db_handler.h"
 #include "shellyplug-s.h"
 #include "trv.h"
+#include "motion.h"
 /*
  *
  * the mqtt_messagehandler.c has the duty to classify the messages coming from 
@@ -17,9 +18,9 @@
 // by checking their topic.
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message)
 {
-    printf("Message arrived\n");
-    printf("     topic: %s\n", topicName);
-    printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
+   // printf("Message arrived\n");
+   // printf("     topic: %s\n", topicName);
+   // printf("   message: %.*s\n", message->payloadlen, (char*)message->payload);
 
 
 
@@ -33,7 +34,11 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	trv_handle(topicName , (char*)message->payload);
 	
      }
-     
+     else if(strstr(topicName,"shellymotion2") != NULL ){
+
+	     motion_handle(topicName,(char*)message->payload);
+
+     }
 
 }
 
