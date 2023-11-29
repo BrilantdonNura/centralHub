@@ -50,8 +50,7 @@ int motion_handle(char* topic, char* payload){
 
 
 	if(strstr(topic,"status")!=NULL && strstr(topic, "read")==NULL){
-	char* id = extractMotionID(topic);
-
+                char* id = extractMotionID(topic);
 		printf("\nid: %s\n", id);
 		printf("\ndata: %s\n", payload);
 
@@ -138,6 +137,12 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
 		return 1;
 		}else{
 
+                free(id);
+		free(insert_data_sql);
+		printf("\n### free heap after writing in db motion ####\n");
+		cJSON_Delete(root);
+
+
 		return 0;
 
 		}
@@ -196,12 +201,19 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
 
     } else {
         fprintf(stderr, "Could not open and send data\n");
+        	free(id);
+		cJSON_Delete(root);
 	return 0;
     }	}
 
 
 else{
 	fprintf(stderr, "HERE Invalid JSON format\n");
+
+	free(id);
+	cJSON_Delete(root);
+
+
 		return 0;
 	}
 

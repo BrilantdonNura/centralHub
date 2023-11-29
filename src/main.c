@@ -32,7 +32,7 @@ else{
 
 }
 
-char c = 30;
+char c = 120;
 while(c>0){
 sleep(1);
 c--;
