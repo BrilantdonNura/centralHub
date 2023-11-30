@@ -1,6 +1,6 @@
 TARGET: exe
-exe: dir  main.o mqtt_initializer.o mqtt_messagehandler.o db_handler.o shellyplug-s.o trv.o motion.o
-	gcc obj/main.o obj/mqtt_initializer.o  obj/mqtt_messagehandler.o  obj/db_handler.o obj/shellyplug-s.o obj/trv.o  obj/motion.o  -o bin/mqtt_client.exe  -L libs/paho.mqtt.c/build/output  -lpaho-mqtt3c -L libs/cJSON  -lcjson  -lsqlite3
+exe: dir  main.o mqtt_initializer.o mqtt_messagehandler.o db_handler.o shellyplug-s.o trv.o motion.o hts2.o
+	gcc obj/main.o obj/mqtt_initializer.o  obj/mqtt_messagehandler.o  obj/db_handler.o obj/shellyplug-s.o obj/trv.o obj/motion.o obj/hts2.o -o bin/mqtt_client.exe  -L libs/paho.mqtt.c/build/output  -lpaho-mqtt3c -L libs/cJSON  -lcjson  -lsqlite3
 main.o:
 	gcc -c src/main.c -I include -o obj/main.o -L libs/paho.mqtt.c/build/output -lpaho-mqtt3c -L libs/cJSON  -lcjson -lsqlite3
 
@@ -20,6 +20,9 @@ trv.o:
 
 motion.o:
 	gcc -c -I include -I libs/cJSON  include/motion.c -o obj/motion.o -lcJSON
+
+hts2.o:
+	gcc -c -I include -I libs/cJSON  include/hts2.c -o obj/hts2.o -lcJSON
 
 dir:
 	if [ ! -d "obj" ] && [ ! -d "bin" ]; then mkdir obj && mkdir bin && echo ""; else echo ""; fi	

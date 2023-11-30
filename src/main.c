@@ -17,12 +17,24 @@ if(mqtt_initialize(&client, &conn_opts) == 0){
 	// this subscription contains shellyplug-s, TRVs etc..
 	if(mqtt_subscribe(&client, "shellies/#") == 0){
 
-		printf("subscribed OK\n");
+		printf("subscribed shellies:  OK\n");
 	}
 	else{
 	
-		printf("subscribed FAIL\n");
+		printf("subscribed shellies: FAIL\n");
 	}
+
+
+	if(mqtt_subscribe(&client, "shellyplusht-80646fc9ba80/#") == 0){
+
+		printf("subscribed shellyplusht: OK\n");
+	}
+	else{
+	
+		printf("subscribed shellyplusht  FAIL\n");
+	}
+
+
 
 }
 
@@ -32,7 +44,7 @@ else{
 
 }
 
-char c = 120;
+int c = 40;
 while(c>0){
 sleep(1);
 c--;

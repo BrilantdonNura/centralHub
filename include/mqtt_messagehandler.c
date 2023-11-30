@@ -5,6 +5,7 @@
 #include "shellyplug-s.h"
 #include "trv.h"
 #include "motion.h"
+#include "hts2.h"
 /*
  *
  * the mqtt_messagehandler.c has the duty to classify the messages coming from 
@@ -39,6 +40,10 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	     motion_handle(topicName,(char*)message->payload);
 
      }
+
+}else if(strstr(topicName, "shellyplusht") != NULL ){
+
+	hts2_handle(topicName, (char*)message->payload);
 
 }
 
