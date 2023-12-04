@@ -7,6 +7,12 @@
 *.obj
 *.elf
 
+# db files
+*.db
+
+# log files
+*.log
+
 # Linker output
 *.ilk
 *.map

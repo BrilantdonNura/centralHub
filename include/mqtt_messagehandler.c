@@ -2,7 +2,7 @@
 #include <cJSON.h>
 #include <string.h>
 #include "db_handler.h"
-#include "shellyplug-s.h"
+#include "shellyplugs.h"
 #include "trv.h"
 #include "motion.h"
 #include "hts2.h"
@@ -29,21 +29,26 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     // check if shellyplug-s is available in the topic's message
     if(strstr(topicName,"shellies") != NULL){
 
-   //shellyplug_s_handle(topicName , (char*)message->payload);
-     if(strstr(topicName,"shellytrv") != NULL ){
+    if(strstr(topicName,"shellytrv") != NULL ){
 	
-	trv_handle(topicName , (char*)message->payload);
+	//trv_handle(topicName , (char*)message->payload);
 	
      }
      else if(strstr(topicName,"shellymotion2") != NULL ){
 
-	     motion_handle(topicName,(char*)message->payload);
+	  //   motion_handle(topicName,(char*)message->payload);
+
+     }
+
+      else if(strstr(topicName,"shellyplug-s") != NULL ){
+
+	     shellyplugs_handle(topicName,(char*)message->payload);
 
      }
 
 }else if(strstr(topicName, "shellyplusht") != NULL ){
 
-	hts2_handle(topicName, (char*)message->payload);
+//	hts2_handle(topicName, (char*)message->payload);
 
 }
 

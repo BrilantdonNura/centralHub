@@ -1,7 +1,7 @@
 #include<sqlite3.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "shellyplug-s.h"
+#include "shellyplugs.h"
 #include "trv.h"
 #include <cJSON.h>
 

@@ -34,8 +34,6 @@ if(mqtt_initialize(&client, &conn_opts) == 0){
 		printf("subscribed shellyplusht  FAIL\n");
 	}
 
-
-
 }
 
 else{
@@ -44,7 +42,7 @@ else{
 
 }
 
-int c = 40;
+int c = 120;
 while(c>0){
 sleep(1);
 c--;
