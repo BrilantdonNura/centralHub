@@ -7,6 +7,8 @@
 #include "motion.h"
 #include "hts2.h"
 #include "shellyPlus1Pm.h"
+#include "shellyPlus2Pm.h"
+
 /*
  *
  * the mqtt_messagehandler.c has the duty to classify the messages coming from 
@@ -54,7 +56,13 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 }
 else if(strstr(topicName, "shellyplus1pm")!=NULL){
 
-    shellyPlus1Pm_handle(topicName, (char*)message->payload);
+    //shellyPlus1Pm_handle(topicName, (char*)message->payload);
+
+}
+else if(strstr(topicName, "shellyplus2pm")!=NULL){
+
+    shellyPlus2Pm_handle(topicName, (char*)message->payload);
+
 
 }
 
