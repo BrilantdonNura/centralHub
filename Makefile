@@ -1,6 +1,6 @@
 TARGET: exe
-exe: dir  main.o mqtt_initializer.o mqtt_messagehandler.o db_handler.o shellyplugs.o trv.o motion.o hts2.o
-	gcc obj/main.o obj/mqtt_initializer.o  obj/mqtt_messagehandler.o  obj/db_handler.o obj/shellyplugs.o obj/trv.o obj/motion.o obj/hts2.o -o bin/mqtt_client.exe  -L libs/paho.mqtt.c/build/output  -lpaho-mqtt3c -L libs/cJSON  -lcjson  -lsqlite3
+exe: dir  main.o mqtt_initializer.o mqtt_messagehandler.o db_handler.o shellyplugs.o trv.o motion.o hts2.o shellyPlus1Pm.o
+	gcc obj/main.o obj/mqtt_initializer.o  obj/mqtt_messagehandler.o  obj/db_handler.o obj/shellyplugs.o obj/trv.o obj/motion.o obj/hts2.o obj/shellyPlus1Pm.o -o bin/mqtt_client.exe  -L libs/paho.mqtt.c/build/output  -lpaho-mqtt3c -L libs/cJSON  -lcjson  -lsqlite3
 main.o:
 	gcc -c src/main.c -I include -o obj/main.o -L libs/paho.mqtt.c/build/output -lpaho-mqtt3c -L libs/cJSON  -lcjson -lsqlite3
 
@@ -23,6 +23,9 @@ motion.o:
 
 hts2.o:
 	gcc -c -I include -I libs/cJSON  include/hts2.c -o obj/hts2.o -lcJSON
+
+shellyPlus1Pm.o:
+	gcc -c -I include -I libs/cJSON include/shellyPlus1Pm.c -o obj/shellyPlus1Pm.o
 
 dir:
 	if [ ! -d "obj" ] && [ ! -d "bin" ]; then mkdir obj && mkdir bin && echo ""; else echo ""; fi	

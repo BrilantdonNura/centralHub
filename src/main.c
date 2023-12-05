@@ -34,6 +34,15 @@ if(mqtt_initialize(&client, &conn_opts) == 0){
 		printf("subscribed shellyplusht  FAIL\n");
 	}
 
+		if(mqtt_subscribe(&client, "shellyplus1pm-7c87ce655894/#") == 0){
+
+		printf("subscribed shellyplus1pm: OK\n");
+	}
+	else{
+	
+		printf("subscribed shellyplus1pm  FAIL\n");
+	}
+
 }
 
 else{

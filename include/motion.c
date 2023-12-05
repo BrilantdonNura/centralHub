@@ -127,8 +127,8 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
 		
 		};
 
-        	sqlite3* key = connect_open_db("myDB");
-        	if (write_to_db(key, &motionData)==1){
+		sqlite3* key = connect_open_db("myDB");
+		if (write_to_db(key, &motionData)==1){
 
 		free(id);
 		free(insert_data_sql);
@@ -151,14 +151,14 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
 	else if(strstr(topic, "read")!= NULL){
 	char* id = extractMotionID(topic);
 		cJSON *root = cJSON_Parse(payload);
-    		if (root == NULL) {
-        		const char *error_ptr = cJSON_GetErrorPtr();
-        		if (error_ptr != NULL) {
-            			fprintf(stderr, "Error before: %s\n", error_ptr);
-        		}
-        		// Handle parsing error
-       			return 0;
-    		}
+		if (root == NULL) {
+			const char *error_ptr = cJSON_GetErrorPtr();
+			if (error_ptr != NULL) {
+					fprintf(stderr, "Error before: %s\n", error_ptr);
+			}
+			// Handle parsing error
+			return 0;
+		}
 
 
 		cJSON *data = cJSON_GetObjectItemCaseSensitive(root, "data");
@@ -204,7 +204,9 @@ printf("\n-----after %s-----\n", "insert_data_sql_format");
         	free(id);
 		cJSON_Delete(root);
 	return 0;
-    }	}
+    }	
+	
+	}
 
 
 else{
