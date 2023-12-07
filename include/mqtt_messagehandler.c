@@ -34,7 +34,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     if(strstr(topicName,"shellytrv") != NULL ){
 	
-	//trv_handle(topicName , (char*)message->payload);
+	trv_handle(topicName , (char*)message->payload);
 	
      }
      else if(strstr(topicName,"shellymotion2") != NULL ){
@@ -61,7 +61,7 @@ else if(strstr(topicName, "shellyplus1pm")!=NULL){
 }
 else if(strstr(topicName, "shellyplus2pm")!=NULL){
 
-    shellyPlus2Pm_handle(topicName, (char*)message->payload);
+    //shellyPlus2Pm_handle(topicName, (char*)message->payload);
 
 
 }

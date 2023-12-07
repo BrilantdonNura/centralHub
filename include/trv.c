@@ -65,9 +65,9 @@ int trv_handle(char* topic, char* payload){
 		if (error_ptr != NULL) {
 		printf("Error before: %s\n", error_ptr);
 		}else {
-		printf("Error: cJSON_Parse failed.\n");
+		printf("%s","Error: cJSON_Parse failed.\n");
 		}
-		printf("\n\nnot working\n\n");
+		printf("%s","\n\nnot working\n\n");
 		return 0;
 		  }
 
@@ -76,19 +76,29 @@ int trv_handle(char* topic, char* payload){
 //
 double TRVpos = 0;
 double trvSensTemp = 0.0;
+double batLvl = 0.0;
+char *calibrated = "false";
 
 cJSON *thermostatsArray = cJSON_GetObjectItem(js,"thermostats");
-if (thermostatsArray != NULL && cJSON_IsArray(thermostatsArray)) {
+cJSON *bat = cJSON_GetObjectItem(js,"bat");
+cJSON *cal = cJSON_GetObjectItem(js,"calibrated");
+if (thermostatsArray != NULL && cJSON_IsArray(thermostatsArray) && bat !=NULL && cal !=NULL) {
+	cJSON* level = cJSON_GetObjectItem(bat, "value");
+	if(level !=NULL && cJSON_IsNumber(level)){
+		batLvl = level->valuedouble;
+		calibrated = cJSON_IsTrue(cal)?"true":"false";
+
+	}
+
 int numThermostats = cJSON_GetArraySize(thermostatsArray);
 for (int i = 0; i < numThermostats; ++i) {
 	cJSON *thermostat = cJSON_GetArrayItem(thermostatsArray, i);
 
 	cJSON *pos = cJSON_GetObjectItem(thermostat, "pos");
-//	cJSON *target_t = cJSON_GetObjectItem(thermostat, "target_t");
 	cJSON *tmp = cJSON_GetObjectItem(thermostat, "tmp");
+	
 
 	if (pos != NULL && cJSON_IsNumber(pos) &&
-	//target_t != NULL && cJSON_IsObject(target_t) &&
 	tmp != NULL && cJSON_IsObject(tmp)) {
 
 	cJSON *tmpValue = cJSON_GetObjectItem(tmp, "value");
@@ -116,18 +126,20 @@ cJSON_Delete(js);
 
 //SQL SCHEMA and DATA entry
 
-const char* insert_data_sql_format = "INSERT INTO trv (id, pos, iTemp) VALUES ('%s', %lf, %lf);";
+const char* insert_data_sql_format = "INSERT INTO trv (id, pos, iTemp, battery, calibrated) VALUES ('%s', %lf, %lf, %lf, '%s');";
 
-int size = snprintf(NULL, 0, insert_data_sql_format, id, TRVpos, trvSensTemp);
+int size = snprintf(NULL, 0, insert_data_sql_format, id, TRVpos, trvSensTemp, batLvl, calibrated);
 char *insert_data_sql = malloc(size + 1);
-snprintf(insert_data_sql, size+1, insert_data_sql_format, id, TRVpos, trvSensTemp);
+snprintf(insert_data_sql, size+1, insert_data_sql_format, id, TRVpos, trvSensTemp, batLvl, calibrated);
 
 trv_t trvData = {
 	.tableSchema = "CREATE TABLE IF NOT EXISTS trv ("
 		       "id TEXT,"
 		       "timestamp DATE DEFAULT (datetime('now','localtime')),"				       
 		       "pos REAL,"
-	               "itemp REAL);",	
+	           "itemp REAL,"
+			   "battery REAL,"
+			   "calibrated TEXT);",	
 	.dataEntry = insert_data_sql,
 	.operation = 'W'
 };
@@ -137,7 +149,7 @@ trv_t trvData = {
 
 		free(id);
 		free(insert_data_sql);
-		printf("\n### free heap after writing####\n");
+		printf("%s","\n### free heap after writing####\n");
 
 		}
 
@@ -176,11 +188,13 @@ cJSON *root = cJSON_Parse(payload);
 	snprintf(sql, sizeof(sql), "SELECT %s,timestamp FROM trv WHERE timestamp BETWEEN '%s' AND '%s'", column, startDate, endDate);
 	
 	trv_t trvDataRead = {
-        	.tableSchema = "CREATE TABLE IF NOT EXISTS trv ("
-                	       "id TEXT,"
-                       		"timestamp DATE DEFAULT (datetime('now','localtime')),"   
- 				"pos REAL,"
-                       		"itemp REAL);",
+		.tableSchema = "CREATE TABLE IF NOT EXISTS trv ("
+		       "id TEXT,"
+		       "timestamp DATE DEFAULT (datetime('now','localtime')),"				       
+		       "pos REAL,"
+	           "itemp REAL,"
+			   "battery REAL,"
+			   "calibrated TEXT);",	
         	.dataEntry = sql,
         	.operation = 'R'
 };
@@ -189,7 +203,7 @@ cJSON *root = cJSON_Parse(payload);
                 if (write_to_db(key, &trvDataRead)==1){
                      free(id); 
 			cJSON_Delete(root);
-                printf("\n### free heap after reading ####\n");
+                printf("%s","\n### free heap after reading ####\n");
 
     } else {
         fprintf(stderr, "Could not open and send data\n");
